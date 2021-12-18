@@ -1,0 +1,52 @@
+<html>
+<head>
+<title>Cinema</title>
+</head>
+<body bgcolor="white" text="black">
+<h2 align="center">Данные об официантах</h2>
+<table border =1 width = 80%>
+<div align=center> 
+<tr>
+    <div align=center> 
+    <tr>
+    <td align="center">ID</td>
+    <td align="center">Номер</td>
+    <td align="center">Имя</td>
+    <td align="center">Дата начала работы</td>
+    <td align="center">День рождения</td>
+    </tr>
+    </tr>
+    {%for film in films%}
+    <tr>
+        <td align="center">{{film['of_id']}}</td>
+        <td align="center">{{film['of_number']}}</td>
+        <td align="center">{{film['of_name']}}</td>
+        <td align="center">{{film['of_date']}}</td>
+        <td align="center">{{film['of_birth']}}</td>
+    </tr>
+    </div>
+    {% endfor %}
+    <a href="/menu/">Вернуться в меню</a>
+    </br>
+    <form method='POST' action=''>
+    <label for=grind> Введите ID </label>
+    <input type=text id=grind name=id>
+    </br>
+    <label for=grind> Введите номер </label>
+    <input type=text id=grind name=numb>
+    </br>
+    <label for=grind> Введите имя </label>
+    <input type=text id=grind name=nam>
+    </br>
+    <label for=grind> Введите дату начала работы </label>
+    <input type=text id=grind name=dat>
+    </br>
+    <label for=grind> Введите дату рождения </label>
+    <input type=text id=grind name=birth>
+    <p><input value='Отправить' name='send' type='submit'></p>
+    <label for=grind> Удалить официанта с номером: </label>
+    <input type=text id=grind name=delet>
+    <p><input value='Удалить' name='send2' type='submit'></p>
+    </form> <br><br>
+</body>
+</html>

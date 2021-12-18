@@ -1,0 +1,41 @@
+<html>
+<head>
+<title>Cinema</title>
+</head>
+<body bgcolor="white" text="black">
+<h2 align="center">Меню</h2>
+<table border =1 width = 80%>
+<div align=center> 
+<tr>
+    <div align=center> 
+    <tr>
+    <td align="center">ID</td>
+    <td align="center">Вес</td>
+    <td align="center">Номер</td>
+    <td align="center">Цена</td>
+    <td align="center">Название</td>
+    </tr>
+    </tr>
+    {%for film in films%}
+    <tr>
+        <td align="center">{{film['menu_id']}}</td>
+        <td align="center">{{film['menu_weight']}}</td>
+        <td align="center">{{film['menu_number']}}</td>
+        <td align="center">{{film['menu_price']}}</td>
+        <td align="center">{{film['menu_name']}}</td>
+    </tr>
+    </div>
+    {% endfor %}
+    <a href="/menu/">Вернуться в главное меню</a>
+    <form method='POST' action=''>
+    </br>
+    <label for=grind> Введите название </label>
+    <input type=text id=grind name=nam>
+    </br>
+    <label for=grind> Введите количество </label>
+    <input type=text id=grind name=numb>
+    <p><input value='Отправить' name='send6' type='submit'></p>
+    <p><input value='Сохранить' name='send5' type='submit'></p>
+</form> <br><br>
+</body>
+</html>

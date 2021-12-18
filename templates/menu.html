@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block extension %}
+
+    <h2 width=80% align=center style="color:#FFFFFF;">Здравствуйте, {{ usr }}!</h2>
+	<h2 width=80% align=center style="color: white">Меню запросов</h2>
+            <div style="color: white;  margin-top: 65px; width: 500px; background: rgba(0, 0, 0, 0.3); align-self: center; align-items: center">
+                {%for m in kino%}
+                    <li> <a href="{{m.url}}">{{m.name}}</a></li><br>
+                {% endfor %}
+            </div>
+    <a href="/">Вернуться на главную</a>
+
+{% endblock %}

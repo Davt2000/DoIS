@@ -1,0 +1,11 @@
+.default_bg {
+    background-image: url(/static/back.jpg)
+}
+.default_col{
+    color: white;
+}
+.my_footer {
+    color: white; position:absolute;
+    bottom:0; width:90%; height:27px
+}
+

@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>Cinema</title>
+</head>
+<body bgcolor="white" text="black">
+<h2 align="center">The result of working with the database</h2>
+<table border =1 width = 80%>
+<div align=center> 
+<tr>
+    <div align=center> 
+    <tr>
+    <td align="center">ID</td>
+    <td align="center">NAME</td>
+    <td align="center">DIRECTOR</td>
+
+    </tr>
+    </tr>
+    {%for film in films%}
+    <tr>
+        <td align="center">{{film['choice_id']}}</td>
+        <td align="center">{{film ['choice_name']}}</td>
+        <td align="center">{{film ['quantity']}}</td>
+    </tr>
+    </div>
+    {% endfor %}
+    <a href="/menu/">Back</a>
+</body>
+</html>

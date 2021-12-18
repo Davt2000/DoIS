@@ -1,0 +1,7 @@
+{
+  "host": "127.0.0.1",
+  "user": "external_user",
+  "password": "s3coor1ty",
+  "database": "COURS_NEW",
+  "charset": "utf8"
+}

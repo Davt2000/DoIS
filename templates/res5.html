@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Cinema</title>
+</head>
+<body bgcolor="white" text="black">
+<h2 align="center">Данные о заказе</h2>
+<table border =1 width = 80%>
+<div align=center> 
+<tr>
+    <div align=center> 
+    <tr>
+    <td align="center">Цена</td>
+    <td align="center">Вес</td>
+    <td align="center">Имя</td>
+    <td align="center">Количество</td>
+    </tr>
+    </tr>
+    {%for film in films%}
+    <tr>
+        <td align="center">{{film['price']}}</td>
+        <td align="center">{{film['weight']}}</td>
+        <td align="center">{{film['name']}}</td>
+        <td align="center">{{film['number']}}</td>
+    </tr>
+    </div>
+    {% endfor %}
+    <a href="/zap5/zap5">Вернуться в меню</a>
+</form> <br><br>
+</body>
+</html>

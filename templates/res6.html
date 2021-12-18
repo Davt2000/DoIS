@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>Cinema</title>
+</head>
+<body bgcolor="white" text="black">
+<h2 align="center">Заказы</h2>
+<table border =1 width = 80%>
+<div align=center> 
+<tr>
+    <div align=center> 
+    <tr>
+    <td align="center">ID</td>
+    <td align="center">Номер официанта</td>
+    <td align="center">Сумма</td>
+    <td align="center">Дата</td>
+    </tr>
+    </tr>
+    {%for film in films%}
+    <tr>
+        <td align="center">{{film['ord_id']}}</td>
+        <td align="center">{{film['of_id']}}</td>
+        <td align="center">{{film['ord_sum']}}</td>
+        <td align="center">{{film['ord_date']}}</td>
+    </tr>
+    </div>
+    {% endfor %}
+    <a href="/menu/">Вернуться в меню</a>
+</body>
+</html>

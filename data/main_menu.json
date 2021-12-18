@@ -1,0 +1,5 @@
+[
+  {"name": "Сменить пользователя", "url": "/menu?point=1"},
+  {"name": "Работа с запросами", "url": "/menu?point=2"},
+  {"name": "Выход", "url": "/menu?point=exit"}
+]

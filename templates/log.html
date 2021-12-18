@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block extension %}
+	<h2 style="color:white">Введите свои данные</h2>
+    <div style="color:white">
+        <form method='POST' action=''>
+        <label for=grind> Введите логин </label>
+        <input type=text id=grind name=login required>
+        <br>
+        <label for=grind> Введите пароль </label>
+        <input type=password id=grind name=password required>
+        <p><input value='Отправить' name='send' type='submit'></p>
+        </form>
+    </div><br><br>
+    <a href="/">Вернутся назад</a>
+{% endblock %}

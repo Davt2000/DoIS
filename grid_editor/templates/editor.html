@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block extension %}
+
+    <h2 width=80% align=center style="color:#FFFFFF;">Здравствуйте, {{ usr }}!</h2>
+	<h2 width=80% align=center style="color: white">Редактор списка фильмов</h2>
+            <div style="color: white;  margin-top: 65px; width: 800px; background: rgba(0, 0, 0, 0.3); align-self: center; align-items: center">
+                <form action='' method=POST>
+                    <label>
+                        <input type=text name=Country placeholder='Страна'>
+                        <input type=number name=Year placeholder='Год'>
+                        <input type=text name=Director placeholder='Режиссер'>
+                        <input type=text name=Studio placeholder='Студия'>
+                        <input type=number name=Length placeholder='Длительность'>
+                        <input type=text name=Name placeholder='Название'>
+                    </label>
+                    <input type=submit name=add value='Добавить'>
+                </form>
+                <br>
+                <table>
+                    {%   for item in items %}
+                    <tr>
+                        <td align="center" hidden>{{item['F_id']}}</td>
+                        <td align="center">{{item['Country']}}</td>
+                        <td align="center">{{item['Year']}}</td>
+                        <td align="center">{{item['Director']}}</td>
+                        <td align="center">{{item['Studio']}}</td>
+                        <td align="center">{{item['Length']}}</td>
+                        <td align="center">{{item['Name']}}</td>
+                        <td align="center">
+                            <form action='' method=POST>
+                                <input type=hidden name=id_to_delete value={{ item['F_id'] }}>
+                                <input type=submit name=del value='Удалить'>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </table>
+            </div>
+    <a href="/">Вернуться на главную</a>
+
+{% endblock %}

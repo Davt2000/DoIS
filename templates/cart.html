@@ -1,0 +1,23 @@
+<html>
+<head>
+</head>
+<body bgcolor=white text=black>
+	<table border =1 width = 80%>
+    <div align=center>
+    {%for item in items%}
+    <tr>
+			<td align=center> {{item['choice_id']}}</td>
+			<td align=center> {{item['choice_name']}}</td>
+			<td align=center> {{item['quantity']}}</td>
+	</tr>
+    {%endfor%}
+    </div>
+<br><br>
+<a href="/basket/bask"> Вернутся назад</a>
+<br><br>
+<form action='' method=POST>
+    <div align=center>
+    <input type='submit' value='Удалить' name='delete'> &nbsp
+    </div>
+</body>
+</html>

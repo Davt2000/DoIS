@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block extension %}
+	<h2 style="color: white">Форма ввода данных</h2>
+		<form method='POST' action='' style="color: white">
+		<label for=grind> Выберите месяц</label>
+		<input type=date id=grind name=date> День в месяце можно выбрать любой
+		<br>
+		<p><input value='Отправить' name='send' type='submit'></p>
+		</form> <br><br>
+        <a width=80% align=center href="/">На главную</a>
+{% endblock %}

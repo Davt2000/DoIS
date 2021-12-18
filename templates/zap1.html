@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block extension %}
+	<h2 style="color: white">Отчет о выручке</h2>
+		<form method='POST' action='' style="color: white">
+		<label for=grind> Введите дату</label>
+		<input type=date id=grind name=date>
+		<br>
+		<p><input value='Отправить' name='send' type='submit'></p>
+		</form> <br><br>
+        <a width=80% align=center href="/menu">В меню</a>
+{% endblock %}

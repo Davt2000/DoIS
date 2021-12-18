@@ -1,0 +1,5 @@
+{
+  "Cashier": ["basket_blueprint"],
+  "Analyst": ["query_handlers_blueprint", "query_routing_blueprint"],
+  "Officer": ["query_handlers_blueprint", "query_routing_blueprint", "basket_blueprint"]
+}

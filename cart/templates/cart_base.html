@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block extension %}
+
+    <h2 width=80% align=center style="color:#FFFFFF;">Здравствуйте, {{ usr }}!</h2>
+	<h2 width=80% align=center style="color: white">Модуль продаж. Корзина</h2>
+            <div style="color: white;  margin-top: 65px; width: 500px; background: rgba(0, 0, 0, 0.3); align-self: center; align-items: center">
+                <table>
+                    {%   for item in items %}
+                    <tr>
+                    T_id, F_name, T_price, B_item_id, B_paid
+                        <td align="center" hidden>{{item['T_id']}}</td>
+                        <td align="center">{{item['F_name']}}</td>
+                        <td align="center">{{item['F_price']}}</td>
+                        <td align="center" hidden>{{item['Director']}}</td>
+                        <td align="center">{{item['Studio']}}</td>
+                        <td align="center">{{item['Length']}}</td>
+                        <td align="center">{{item['Name']}}</td>
+                        <td align="center">
+                            <form action='' method=POST>
+                                <input type=hidden name=id_to_delete value={{ item['F_id'] }}>
+                                <input type=submit name=del value='Удалить'>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+    <a href="/">Вернуться на главную</a>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+
+<html lang=ru><meta charset=utf-8>
+    <head>
+  		<title>Working with database</title>
+	</head>
+<body>
+{% for item in items %}
+<form action='' method=POST>
+    <div align=center>
+        <input type=hidden name=choice_name value={{ item.t_name }}>
+        <input type=hidden name=choice_id value={{ item.id }}>
+        {{ item.t_name }} &nbsp
+        <input type='text' id=grind name={{ item.t_name }}> &nbsp
+        <input type='submit' value='Выбрать' name='choice'> <br><br>
+    </div>
+</form>
+{% endfor %}
+<br><br>
+<form action='' method=POST>
+    <div align=center>
+        <input type='submit' value='Оформить заказ' name='show_basket'> &nbsp
+        <input type='submit' value='Сохранить корзину и выйти' name='exit'>
+    </div>
+</form>
+</body>
+</html>

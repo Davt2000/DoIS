@@ -1,0 +1,52 @@
+<html>
+<head>
+<title>Cinema</title>
+</head>
+<body bgcolor="white" text="black">
+<h2 align="center">Данные меню</h2>
+<table border =1 width = 80%>
+<div align=center> 
+<tr>
+    <div align=center> 
+    <tr>
+    <td align="center">ID</td>
+    <td align="center">Вес</td>
+    <td align="center">Номер</td>
+    <td align="center">Цена</td>
+    <td align="center">Название</td>
+    </tr>
+    </tr>
+    {%for film in films%}
+    <tr>
+        <td align="center">{{film['menu_id']}}</td>
+        <td align="center">{{film['menu_weight']}}</td>
+        <td align="center">{{film['menu_number']}}</td>
+        <td align="center">{{film['menu_price']}}</td>
+        <td align="center">{{film['menu_name']}}</td>
+    </tr>
+    </div>
+    {% endfor %}
+    <a href="/menu/">В главное меню</a>
+    </br>
+    <form method='POST' action=''>
+    <label for=grind> Введите ID </label>
+    <input type=text id=grind name=menuid>
+    </br>
+    <label for=grind> Введите Вес </label>
+    <input type=text id=grind name=weight>
+    </br>
+    <label for=grind> Введите Номер </label>
+    <input type=text id=grind name=mnumb>
+    </br>
+    <label for=grind> Введите цену </label>
+    <input type=text id=grind name=mprice>
+    </br>
+    <label for=grind> Название </label>
+    <input type=text id=grind name=menunam>
+    <p><input value='Отправить' name='send1' type='submit'></p>
+    <label for=grind> Удалить блюдо с id: </label>
+    <input type=text id=grind name=mdelet>
+    <p><input value='Отправить' name='send12' type='submit'></p>
+    </form> <br><br>
+</body>
+</html>

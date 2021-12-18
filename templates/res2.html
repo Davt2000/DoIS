@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block extension %}
+    <h2 align="center" style="color: white">Данные о выручке за {{ rep }}</h2>
+    <div style="color: white;  margin-top: 120px; width: 400px; background: rgba(0, 0, 0, 0.3); align-self: center; align-items: center; margin-bottom: 25px">
+        <table>
+            <tr>
+                <td align="center">Дата начала</td>
+                <td align="center">Выручка</td>
+            </tr>
+            {%for film in films%}
+            <tr>
+                <td align="center">{{film['Date']}}</td>
+                <td align="center">{{film['Total']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <a href="/menu/">Вернуться в меню</a>
+
+{% endblock %}
