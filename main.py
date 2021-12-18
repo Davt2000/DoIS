@@ -19,6 +19,8 @@ app.register_blueprint(cart_blueprint, url_prefix='/shop')
 with open('data/secret_key.json', 'r') as f:
     app.secret_key = json.load(f)['secret_key']
 
+# i hate main
+
 
 @app.route('/')
 def index():
