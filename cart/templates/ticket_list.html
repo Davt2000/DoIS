@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block extension %}
+
+    <h2 width=80% align=center style="color:#FFFFFF;">Здравствуйте, {{ usr }}!</h2>
+	<h2 width=80% align=center style="color: white">Модуль продаж. Билеты на {{ items[0]['date'] }}</h2>
+            <div style="color: white;  margin-top: 65px; width: 800px; background: rgba(0, 0, 0, 0.3); align-self: center; align-items: center; align-content: center" class="container">
+                <div class="row">
+                    <div class="col-md-2">Номер билета</div>
+                    <div class="col-md-2">Название фильма</div>
+                    <div class="col-md-2">Цена билета</div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <a href="/marketplace">Назад</a>
+                        <br>
+                        <a href="/">Вернуться на главную</a>
+                        <br>
+                        <a href="/marketplace/cart">В корзину</a>
+                    </div>
+                </div>
+                    {%   for item in items %}
+                        <div class="row">
+                        <div class="col-md-2">{{item['T_id']}}</div>
+                        <div class="col-md-2">{{item['F_name']}}</div>
+                        <div class="col-md-2">{{item['T_Price']}}</div>
+                        <div class="col-md-2" hidden>{{item['row_']}}</div>
+                        <div class="col-md-2">
+                             <form action='' method=POST>
+                                <input type=hidden name=id_to_add value={{ item['T_id'] }}>
+                                <input type=submit name=add value='Добавить в корзину'>
+                            </form>
+                        </div>
+                        </div>
+                    {% endfor %}
+
+                </table>
+            </div>
+
+{% endblock %}

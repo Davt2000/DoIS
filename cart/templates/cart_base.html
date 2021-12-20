@@ -3,28 +3,47 @@
 
     <h2 width=80% align=center style="color:#FFFFFF;">Здравствуйте, {{ usr }}!</h2>
 	<h2 width=80% align=center style="color: white">Модуль продаж. Корзина</h2>
-            <div style="color: white;  margin-top: 65px; width: 500px; background: rgba(0, 0, 0, 0.3); align-self: center; align-items: center">
-                <table>
+            <div style="color: white;  margin-top: 65px; width: 800px; background: rgba(0, 0, 0, 0.3); align-self: center; align-items: center; align-content: center" class="container">
+                <div class="row">
+                    <div class="col-md-2">Номер билета</div>
+                    <div class="col-md-2">Название фильма</div>
+                    <div class="col-md-2">Цена билета</div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <a href="/marketplace">Назад</a>
+                        <br>
+                        <a href="/">Вернуться на главную</a>
+                    </div>
+                </div>
                     {%   for item in items %}
-                    <tr>
-                    T_id, F_name, T_price, B_item_id, B_paid
-                        <td align="center" hidden>{{item['T_id']}}</td>
-                        <td align="center">{{item['F_name']}}</td>
-                        <td align="center">{{item['F_price']}}</td>
-                        <td align="center" hidden>{{item['Director']}}</td>
-                        <td align="center">{{item['Studio']}}</td>
-                        <td align="center">{{item['Length']}}</td>
-                        <td align="center">{{item['Name']}}</td>
-                        <td align="center">
+                    <div class="row">
+                        <div class="col-md-2">{{item['T_id']}}</div>
+                        <div class="col-md-2" hidden>{{item['B_item_id']}}</div>
+                        <div class="col-md-2">{{item['F_name']}}</div>
+                        <div class="col-md-2">{{item['T_price']}}</div>
+                        <div class="col-md-2" hidden>{{item['B_paid']}}</div>
+                        <div class="col-md-2">
                             <form action='' method=POST>
-                                <input type=hidden name=id_to_delete value={{ item['F_id'] }}>
+                                <input type=hidden name=id_to_delete value={{ item['T_id'] }}>
                                 <input type=submit name=del value='Удалить'>
                             </form>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     {% endfor %}
-                </table>
+                    <div class="row">
+                        <div class="col-md-3">Всего билетов: {{ count_ }}</div>
+                        <div class="col-md-3">К оплате: {{ to_pay }}</div>
+                        <div class="col-md-3"><form action='' method=POST>
+                                <input type=submit name=buy value='Оплатить'>
+                            </form>
+                        </div>
+                        <div class="col-md-3">
+                            <form action='' method=POST>
+                                <input type=submit name=drop value='Очистить корзину'>
+                            </form>
+                        </div>
+                    </div>
             </div>
-    <a href="/">Вернуться на главную</a>
+
 
 {% endblock %}

@@ -10,13 +10,51 @@ cart_blueprint = Blueprint('cart_blueprint', __name__, template_folder='template
 @cart_blueprint.route('/', methods=['GET', 'POST'])
 @in_session
 def start_handler():
-    return
+    update_session_cart(abs(hash(session['user'])%10000))  # potentially insecure hash
+    if 'user' in session:
+        rol = session['role']
+        usr = session['user']
+    else:
+        rol = 'Unauthorized'
+        usr = 'user'
+    return render_template("marketplace_index.html", rol=rol, usr=usr)
 
 
-@cart_blueprint.route('/', methods=['GET', 'POST'])
+@cart_blueprint.route('/list', methods=['GET', 'POST'])
 @in_session
-def session_handler():
-    return
+def session_handler():  # do not confuse movie session (business object) and flask.session
+    return render_template('sessions_list_b.html', usr=session['user'], items=get_available_sessions())
+
+
+@cart_blueprint.route('/tickets', methods=['GET', 'POST'])
+@in_session
+def ticket_handler():
+    se_id = request.args.get('id')
+    all_tickets = get_available_tickets(se_id)
+
+    if request.method == "POST":
+        t_id = request.form.get('id_to_add')
+
+        if t_id not in session['cart']:
+            item_to_put = simple_sql(
+                f""" SELECT F.Name, T.Price
+                    FROM Session Se 
+                    JOIN Film F on F.F_id = Se.F_id  
+                    JOIN Ticket T on Se.Se_id = T.Se_id
+                    WHERE T.T_id = {t_id}
+                """
+            )
+            cart = session['cart']
+            cart[t_id] = {
+                "F_name": item_to_put[0][0],
+                "T_price": item_to_put[0][1],
+                "B_item_id": None,
+                "B_paid": None,
+                "T_id": t_id
+            }
+            session['cart'] = cart
+
+    return render_template('ticket_list.html', usr=session['user'], items=all_tickets)
 
 
 @cart_blueprint.route('/cart', methods=['GET', 'POST'])
@@ -25,25 +63,17 @@ def cart_handler():
     with open('data/dbconfig.json', 'r', encoding='utf-8') as f:
         current_app.config['dbconfig'] = json.load(f)
 
-    b_id = hash(session['user'])      # potentially unsafe
-
-    if request.method == 'GET':
-        cart = session.get('cart', None)
-
-        if cart is None:
-            cart = get_cart(b_id)
-            if cart == ('emp',):
-                cart = None         # ¯\_(ツ)_/¯
-        else:
-            save_cart(cart, b_id)
-        return render_template('cart_base.html', items=cart, usr=session['user'])
+    b_id = abs(hash(session['user'])%10000)     # potentially unsafe and even more insecure
+    update_session_cart(b_id)
 
     buy = request.form.get('buy')
     remove = request.form.get('del')
     drop = request.form.get('drop')
 
     if remove:
-        session['cart'].pop(request.form.get('id_to_delete'))
+        cart = session['cart']
+        cart.pop(request.form.get('id_to_delete'))
+        session['cart'] = cart
     if drop:
         session['cart'] = dict()
         drop_cart(b_id)
@@ -51,19 +81,28 @@ def cart_handler():
         save_cart(session['cart'], b_id)
         buy_all(b_id)
         drop_cart(b_id)
-    return render_template('cart_base.html', items=session['cart'], usr=session['user'])
+        session['cart'] = dict()
+
+    cart = session['cart'].values()
+    count_ = 0
+    to_pay = 0
+    for i in cart:
+        count_ += 1
+        to_pay += i['T_price']
+    return render_template('cart_base.html', items=cart,
+                           usr=session['user'], count_=count_, to_pay=to_pay)
 
 
 def get_available_sessions():
     result = simple_sql(f"""
-        SELECT F.Name, H.Name, Se.Data 
+        SELECT Se.Se_id, F.Name, H.Name, Se.Data 
         FROM Session Se 
         JOIN Film F on F.F_id = Se.F_id  
         JOIN Hall H on H.H_id = Se.H_id
         WHERE Se.Data >= NOW()
     """)
     res = []
-    schema = ['film', 'hall', 'datetime']
+    schema = ['id', 'film', 'hall', 'datetime']
     for line in result:
         res.append(dict(zip(schema, line)))
     return res
@@ -71,14 +110,15 @@ def get_available_sessions():
 
 def get_available_tickets(se_id):
     result = simple_sql(f"""
-        SELECT T.T_id, T.Price, Sc.Row_ FROM Ticket T 
+        SELECT T.T_id, T.Price, Sc.Row_, Se.Data, F.Name
+        FROM Ticket T 
         JOIN Session Se on T.Se_id = Se.Se_id
         JOIN Scheme Sc on Sc.Sc_id = T.Sc_id
-        WHERE Se.Se_id = {se_id}
-        GROUP BY Sc.Row_, T.Price
+        JOIN Film F on F.F_id = Se.F_id
+        WHERE Se.Se_id = {se_id} AND T.Sold = FALSE
     """)
     res = []
-    schema = ['T_id', 'T_Price', 'row_']
+    schema = ['T_id', 'T_Price', 'row_', 'date', 'F_name']
     for line in result:
         res.append(dict(zip(schema, line)))
     return res
@@ -97,23 +137,26 @@ def get_cart(b_id):
 
 
 def update_cart():
+    session['cart'].pop(request.form.get('id_to_delete'))
     return
 
 
 def drop_cart(b_id):
-    simple_sql(f"""
-    DELETE FROM Basket WHERE B_id_hashed = {b_id}
-    """)
+    with UseDatabase(current_app.config['dbconfig']) as cursor:
+        cursor.execute(f"""
+    DELETE FROM Basket WHERE B_id_hashed = {b_id}""",)
     return
 
 
 def save_cart(cart_content, b_id):
     drop_cart(b_id)
     for it_ in cart_content:
-        simple_sql(f"""
-            INSERT INTO Basket (B_id_hashed, F_name, T_price, T_id, B_paid)
-            VALUES ({b_id}, {it_["F_name"]}, {it_["T_price"]}, {it_["T_id"]}, 0) 
-        """)
+        namae = cart_content[it_]["F_name"]
+        with UseDatabase(current_app.config['dbconfig']) as cursor:
+            cursor.execute(f"""
+            INSERT INTO Basket (B_id_hashed, F_name, T_price, T_id)
+            VALUES ({b_id}, '{namae}', {cart_content[it_]["T_price"]}, {cart_content[it_]["T_id"]}) 
+        """,)
     return
 
 
@@ -124,11 +167,11 @@ def buy_all(b_id):
         """)
 
     for it_ in result:
-        simple_sql(f"""
-            UPDATE Ticket SET Sold = TRUE WHERE T_id = {it_}
+        update_sql(f"""
+            UPDATE Ticket SET Sold = TRUE WHERE T_id = {it_[0]}
         """)
 
-    simple_sql(f"""
+    update_sql(f"""
         UPDATE Basket SET B_paid = NOW() WHERE B_id_hashed = {b_id}
     """)
     return
@@ -138,7 +181,32 @@ def buy_all(b_id):
 #     return
 
 
+@cart_blueprint.before_request
+def load_user():
+    with open('data/dbconfig.json', 'r', encoding='utf-8') as f:
+        current_app.config['dbconfig'] = json.load(f)
+
+
+def update_sql(query_):
+    with UseDatabase(current_app.config['dbconfig']) as cursor:
+        cursor.execute(query_, )
+    return
+
+
 def simple_sql(query_):
+
     with UseDatabase(current_app.config['dbconfig']) as cursor:
         cursor.execute(query_, )
         return cursor.fetchall()
+
+
+def update_session_cart(b_id):
+    cart = session.get('cart', dict())
+
+    if not cart.keys():
+        cart = get_cart(b_id)
+        if cart == ('emp',):
+            cart = dict()  # ¯\_(ツ)_/¯
+    else:
+        save_cart(cart, b_id)
+    session['cart'] = cart
