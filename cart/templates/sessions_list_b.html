@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block extension %}
+
+    <h2 width=80% align=center style="color:#FFFFFF;">Здравствуйте, {{ usr }}!</h2>
+	<h2 width=80% align=center style="color: white">Модуль продаж. Сеансы</h2>
+            <div style="color: white;  margin-top: 65px; width: 800px; background: rgba(0, 0, 0, 0.3); align-self: center; align-items: center; align-content: center" class="container">
+                <div class="row">
+                    <div class="col-md-2">Фильм</div>
+                    <div class="col-md-2">Зал</div>
+                    <div class="col-md-2">Дата</div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <a href="/marketplace">Назад</a>
+                        <br>
+                        <a href="/">Вернуться на главную</a>
+                    </div>
+                </div>
+                            {%   for item in items %}
+                                <div class="row">
+                            <div class="col-md-2" hidden>{{item['id']}}</div>
+                            <div class="col-md-2">{{item['film']}}</div>
+                            <div class="col-md-2">{{item['hall']}}</div>
+                            <div class="col-md-2">{{item['datetime']}}</div>
+                            <div class="col-md-2"><a href="tickets?id={{ item['id'] }}">Доступные билеты</a></div>
+                                </div>
+                            {% endfor %}
+
+                </div>
+
+
+{% endblock %}
